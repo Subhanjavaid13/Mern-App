@@ -1,8 +1,13 @@
 import express from "express";
 import router from "./routes/notesRoutes.js";
+import connectDb from "./config/db.js";
+import dotenv from "dotenv"
+
+dotenv.config();
 
 const app = express();
 
+connectDb();
 
 app.use("/api/notes",router);
 
