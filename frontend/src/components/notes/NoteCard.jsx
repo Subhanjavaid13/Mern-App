@@ -59,20 +59,22 @@ export default function NoteCard({ note, onDelete, index = 0, className }) {
             </span>
           </div>
 
-          <div className="relative z-10 flex items-center gap-1 transition-all duration-200 sm:translate-y-1 sm:opacity-0 sm:group-focus-within:translate-y-0 sm:group-focus-within:opacity-100 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
+          <div className="relative z-10 flex items-center gap-0.5 rounded-full border border-base-300/70 bg-base-100 p-0.5 shadow-soft transition-all duration-200 sm:translate-y-1 sm:opacity-0 sm:group-focus-within:translate-y-0 sm:group-focus-within:opacity-100 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
             <IconButton
               icon={PenLine}
               label="Edit note"
               size="sm"
+              tooltip={false}
               to={`/note/${note._id}?edit=1`}
-              className="bg-base-100/90"
+              className="hover:bg-primary/10 hover:text-primary"
             />
             <IconButton
               icon={Trash2}
               label="Delete note"
               size="sm"
+              tooltip={false}
               onClick={() => onDelete?.(note)}
-              className="bg-base-100/90 hover:bg-error/10 hover:text-error"
+              className="hover:bg-error/10 hover:text-error"
             />
           </div>
         </footer>

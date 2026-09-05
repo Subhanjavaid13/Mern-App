@@ -40,31 +40,31 @@ const latte = {
 }
 
 /**
- * "Espresso" — dark roast page, mocha surfaces that clearly lift off it,
- * visible cocoa borders and caramel-gold accents (dark)
+ * "Espresso" — warm charcoal page and graphite surfaces (no brown),
+ * lit by ember-orange and amber accents for strong contrast (dark)
  */
 const espresso = {
   'color-scheme': 'dark',
-  primary: '#E3B384',
-  'primary-content': '#26180F',
-  secondary: '#CD955F',
-  'secondary-content': '#1F150E',
-  accent: '#F0D6B4',
-  'accent-content': '#2A1B12',
-  neutral: '#F3E8D8',
-  'neutral-content': '#2A1B12',
-  'base-100': '#332821',
-  'base-200': '#221A15',
-  'base-300': '#54433A',
-  'base-content': '#F6EDE0',
-  info: '#96B1CE',
-  'info-content': '#0F1A26',
-  success: '#93C08F',
-  'success-content': '#0E1C0E',
-  warning: '#EBBF63',
-  'warning-content': '#2A1E07',
-  error: '#E4846D',
-  'error-content': '#2A0F08',
+  primary: '#F5873A',
+  'primary-content': '#1B0E05',
+  secondary: '#FFAE62',
+  'secondary-content': '#1F1207',
+  accent: '#FFCB8E',
+  'accent-content': '#241607',
+  neutral: '#F4EFE8',
+  'neutral-content': '#1B1815',
+  'base-100': '#201D1A',
+  'base-200': '#141210',
+  'base-300': '#3B3631',
+  'base-content': '#F4EFE8',
+  info: '#A9BFCF',
+  'info-content': '#0F1A22',
+  success: '#8FCB8A',
+  'success-content': '#0B1C0B',
+  warning: '#F6C453',
+  'warning-content': '#2A1E05',
+  error: '#F27B64',
+  'error-content': '#2A0C06',
   ...shape,
 }
 

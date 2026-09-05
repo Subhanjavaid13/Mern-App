@@ -17,7 +17,7 @@ export default function Logo({ compact = false, size = 'md', to = '/', className
     <>
       <span
         className={cn(
-          'relative grid shrink-0 place-items-center bg-gradient-to-br from-primary to-[#3F2618] text-primary-content shadow-soft transition-transform duration-300 group-hover:-rotate-6 dark:to-secondary',
+          'relative grid shrink-0 place-items-center bg-gradient-to-br from-primary to-[#3F2618] text-primary-content shadow-soft transition-transform duration-300 group-hover:-rotate-6 dark:from-secondary dark:to-primary',
           mark,
         )}
       >

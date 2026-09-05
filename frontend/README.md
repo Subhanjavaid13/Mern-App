@@ -2,7 +2,8 @@
 
 A warm, responsive notes UI built with React 19, Vite, Tailwind CSS 3, daisyUI 4, lucide-react icons,
 react-router and axios. Two themes ship out of the box: **Latte** (cream / beige / chocolate) and
-**Espresso** (dark roast). The choice is remembered in `localStorage` and applied before first paint.
+**Espresso** (warm charcoal surfaces with ember-orange accents). The choice is remembered in `localStorage`
+and applied before first paint.
 
 ```bash
 npm install
