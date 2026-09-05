@@ -6,7 +6,7 @@ import NoteListItem from './NoteListItem'
 export default function NotesGrid({ notes, view = VIEW_MODES.GRID, onDelete }) {
   if (view === VIEW_MODES.LIST) {
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2.5">
         {notes.map((note, index) => (
           <NoteListItem key={note._id} note={note} index={index} onDelete={onDelete} />
         ))}
@@ -15,7 +15,7 @@ export default function NotesGrid({ notes, view = VIEW_MODES.GRID, onDelete }) {
   }
 
   return (
-    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {notes.map((note, index) => (
         <NoteCard key={note._id} note={note} index={index} onDelete={onDelete} />
       ))}

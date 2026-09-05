@@ -13,8 +13,8 @@ export default function BackLink({ to, onClick, children = 'Back', className }) 
   )
   const inner = (
     <>
-      <span className="grid size-7 place-items-center rounded-full border border-base-300/80 bg-base-100 transition-all group-hover:-translate-x-0.5 group-hover:border-primary/40 group-hover:bg-primary/10">
-        <ArrowLeft className="size-3.5" aria-hidden="true" />
+      <span className="grid size-6 place-items-center rounded-full border border-base-300/80 bg-base-100 transition-all group-hover:-translate-x-0.5 group-hover:border-primary/40 group-hover:bg-primary/10">
+        <ArrowLeft className="size-3" aria-hidden="true" />
       </span>
       <span>{children}</span>
     </>

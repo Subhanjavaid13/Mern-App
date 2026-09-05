@@ -20,14 +20,14 @@ export default function SegmentedControl({
   label,
   className,
 }) {
-  const sizing = size === 'sm' ? 'h-8 px-2.5 text-xs' : 'h-9 px-3 text-sm'
+  const sizing = size === 'sm' ? 'h-7 px-2 text-xs' : 'h-8 px-2.5 text-sm'
 
   return (
     <div
       role="radiogroup"
       aria-label={label}
       className={cn(
-        'inline-flex items-center gap-1 rounded-xl border border-base-300/80 bg-base-200/70 p-1',
+        'inline-flex items-center gap-0.5 rounded-btn border border-base-300/80 bg-base-200/70 p-0.5',
         className,
       )}
     >
@@ -43,11 +43,11 @@ export default function SegmentedControl({
             aria-label={iconOnly ? option.label : undefined}
             onClick={() => onChange?.(option.value)}
             className={cn(
-              'inline-flex items-center gap-1.5 rounded-lg font-medium transition-all duration-200',
+              'inline-flex items-center gap-1.5 rounded-lg font-medium transition-colors duration-150',
               sizing,
               iconOnly && 'aspect-square justify-center px-0',
               selected
-                ? 'bg-base-100 text-primary shadow-soft'
+                ? 'bg-base-100 text-base-content shadow-soft'
                 : 'text-base-content/55 hover:text-base-content',
             )}
           >

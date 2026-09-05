@@ -75,29 +75,26 @@ export default function Modal({
           className,
         )}
       >
-        <div className="p-6 sm:p-7">
-          <div className="flex items-start gap-4">
+        <div className="p-5 sm:p-6">
+          <div className="flex items-start gap-3.5">
             {Icon && (
               <div
                 className={cn(
-                  'grid size-12 shrink-0 place-items-center rounded-2xl',
+                  'grid size-10 shrink-0 place-items-center rounded-xl',
                   ICON_TONES[iconTone] ?? ICON_TONES.primary,
                 )}
               >
-                <Icon className="size-6" aria-hidden="true" />
+                <Icon className="size-5" aria-hidden="true" />
               </div>
             )}
             <div className="min-w-0 flex-1">
               {title && (
-                <h3
-                  id="modal-title"
-                  className="font-display text-2xl font-semibold leading-tight tracking-tight"
-                >
+                <h3 id="modal-title" className="font-display text-lg font-bold leading-tight tracking-tight">
                   {title}
                 </h3>
               )}
               {description && (
-                <p className="mt-1.5 text-sm leading-relaxed text-base-content/65">{description}</p>
+                <p className="mt-1 text-sm leading-relaxed text-base-content/65">{description}</p>
               )}
             </div>
             {showClose && (
@@ -106,17 +103,17 @@ export default function Modal({
                 label="Close"
                 size="sm"
                 tooltip={false}
-                className="-mr-2 -mt-2"
+                className="-mr-1.5 -mt-1.5"
                 disabled={!dismissible}
                 onClick={() => dialogRef.current?.close()}
               />
             )}
           </div>
-          {children && <div className="mt-5">{children}</div>}
+          {children && <div className="mt-4">{children}</div>}
         </div>
 
         {actions && (
-          <div className="flex flex-col-reverse gap-2 border-t border-base-300/60 bg-base-200/60 px-6 py-4 sm:flex-row sm:justify-end">
+          <div className="flex flex-col-reverse gap-2 border-t border-base-300/60 bg-base-200/50 px-5 py-3.5 sm:flex-row sm:justify-end">
             {actions}
           </div>
         )}

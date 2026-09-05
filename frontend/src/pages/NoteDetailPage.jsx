@@ -4,9 +4,7 @@ import toast from 'react-hot-toast'
 import { CircleAlert, Copy, FileText, Home, PenLine, Plus, RefreshCw, Trash2 } from 'lucide-react'
 import { useHotkey } from '../hooks/useHotkey'
 import * as notesApi from '../lib/notesApi'
-import { cn } from '../utils/cn'
 import { formatDateTime } from '../utils/date'
-import { accentFor, initialOf } from '../utils/text'
 import BackLink from '../components/ui/BackLink'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
@@ -22,18 +20,17 @@ import NoteMeta from '../components/notes/NoteMeta'
 
 function DetailSkeleton() {
   return (
-    <div className="mt-8" aria-busy="true" aria-label="Loading note">
-      <Skeleton className="h-1.5 w-20 rounded-full" />
-      <Skeleton className="mt-5 h-10 w-3/4" />
-      <Skeleton className="mt-2 h-10 w-1/2" />
-      <div className="mt-5 flex gap-2">
+    <div className="mt-6" aria-busy="true" aria-label="Loading note">
+      <Skeleton className="h-8 w-3/4" />
+      <Skeleton className="mt-2 h-8 w-1/2" />
+      <div className="mt-4 flex gap-2">
         <Skeleton className="h-6 w-24 rounded-full" />
         <Skeleton className="h-6 w-20 rounded-full" />
         <Skeleton className="h-6 w-20 rounded-full" />
       </div>
-      <Card padding="xl" className="mt-8">
+      <Card padding="lg" className="mt-6">
         <SkeletonText lines={5} />
-        <SkeletonText lines={4} className="mt-8" />
+        <SkeletonText lines={4} className="mt-6" />
       </Card>
     </div>
   )
@@ -126,11 +123,11 @@ export default function NoteDetailPage() {
   /* ------------------------------------------------ Non-ready states */
   if (status === 'not-found') {
     return (
-      <Container className="py-12 sm:py-20">
+      <Container className="py-10 sm:py-16">
         <EmptyState
           icon={FileText}
-          title="This note wandered off"
-          description="It may have been deleted, or the link might be broken. Your other notes are safe and sound."
+          title="Note not found"
+          description="It may have been deleted, or the link might be broken."
           action={
             <Button to="/" leftIcon={Home}>
               Back to notes
@@ -138,7 +135,7 @@ export default function NoteDetailPage() {
           }
           secondaryAction={
             <Button variant="outline" to="/create" leftIcon={Plus}>
-              Write a new one
+              New note
             </Button>
           }
         />
@@ -148,7 +145,7 @@ export default function NoteDetailPage() {
 
   if (status === 'error') {
     return (
-      <Container className="py-12 sm:py-20">
+      <Container className="py-10 sm:py-16">
         <EmptyState
           icon={CircleAlert}
           title="Something went wrong"
@@ -170,7 +167,7 @@ export default function NoteDetailPage() {
 
   if (status === 'loading' || !note) {
     return (
-      <Container width="md" className="pb-16 pt-8 sm:pt-12">
+      <Container width="md" className="pb-16 pt-6 sm:pt-8">
         <BackLink to="/">All notes</BackLink>
         <DetailSkeleton />
       </Container>
@@ -180,17 +177,17 @@ export default function NoteDetailPage() {
   /* ------------------------------------------------ Edit mode */
   if (editing) {
     return (
-      <Container className="pb-24 pt-8 sm:pt-12">
+      <Container className="pb-16 pt-6 sm:pt-8">
         <BackLink onClick={stopEditing}>Back to note</BackLink>
         <PageHeader
-          className="mt-5"
+          className="mt-4"
           eyebrow="Editing"
           title={note.title}
-          description="Make your changes and save when you're happy with them."
+          description="Make your changes and save when you're done."
         />
         <NoteForm
           key={note._id}
-          className="mt-8"
+          className="mt-6"
           initialValues={note}
           onSubmit={handleSave}
           onCancel={stopEditing}
@@ -204,7 +201,7 @@ export default function NoteDetailPage() {
   /* ------------------------------------------------ Read mode */
   return (
     <>
-      <Container width="md" className="pb-28 pt-8 sm:pb-16 sm:pt-12">
+      <Container width="md" className="pb-24 pt-6 sm:pb-16 sm:pt-8">
         <div className="flex items-center justify-between gap-4">
           <BackLink to="/">All notes</BackLink>
           <div className="hidden items-center gap-2 sm:flex">
@@ -225,26 +222,19 @@ export default function NoteDetailPage() {
           </div>
         </div>
 
-        <article className="mt-8 animate-fade-up">
+        <article className="mt-6 animate-fade-up">
           <header>
-            <div className={cn('h-1.5 w-20 rounded-full', accentFor(note._id))} aria-hidden="true" />
-            <h1 className="mt-5 font-display text-3xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-4xl lg:text-5xl">
+            <h1 className="font-display text-2xl font-bold leading-tight tracking-tight text-balance sm:text-3xl lg:text-4xl">
               {note.title}
             </h1>
-            <NoteMeta note={note} className="mt-5" />
+            <NoteMeta note={note} className="mt-3" />
           </header>
 
-          <Card padding="xl" className="mt-8 overflow-hidden">
-            <span
-              className="pointer-events-none absolute -right-6 -top-10 select-none font-display text-[12rem] font-bold leading-none text-base-content/[0.035]"
-              aria-hidden="true"
-            >
-              {initialOf(note.title)}
-            </span>
-            <NoteContent content={note.content} className="relative" />
+          <Card padding="lg" className="mt-6">
+            <NoteContent content={note.content} />
           </Card>
 
-          <footer className="mt-6 flex flex-wrap items-center justify-between gap-3 text-xs text-base-content/50">
+          <footer className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-base-content/50">
             <span>Created {formatDateTime(note.createdAt)}</span>
             <span>Last edited {formatDateTime(note.updatedAt)}</span>
           </footer>
@@ -253,7 +243,7 @@ export default function NoteDetailPage() {
 
       {/* Sticky action bar on small screens */}
       <div
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-base-300/60 bg-base-100/90 p-3 backdrop-blur-xl sm:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-base-300/60 bg-base-100/95 p-3 backdrop-blur-xl sm:hidden"
         style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
       >
         <div className="flex items-center gap-2">
@@ -267,6 +257,7 @@ export default function NoteDetailPage() {
             icon={Trash2}
             label="Delete note"
             variant="danger-soft"
+            size="lg"
             tooltip={false}
             onClick={() => setDeleteOpen(true)}
           />

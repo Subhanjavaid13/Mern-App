@@ -45,7 +45,7 @@ src/
 │  │             Modal, ConfirmDialog, Dropdown, Tooltip, Skeleton, EmptyState, SearchBar,
 │  │             SegmentedControl, Alert, StatCard, PageHeader, BackLink, Logo, Kbd,
 │  │             Spinner/PageLoader, ThemeToggle, Container, AppToaster)
-│  ├─ layout/    AppLayout (background + navbar + footer + scroll restore), Navbar, Footer
+│  ├─ layout/    AppLayout (navbar + footer + scroll restore), Navbar, Footer
 │  └─ notes/     NoteCard, NoteListItem, NotesGrid, NotesToolbar, NotesSkeleton, NotesEmpty,
 │                NoteForm (create/edit), NoteMeta, NoteContent, DeleteNoteDialog, RateLimitBanner
 ├─ pages/        HomePage, CreatePage, NoteDetailPage (read + edit via ?edit=1), NotFoundPage
@@ -73,4 +73,4 @@ every component picks up a palette change automatically. Shadows are CSS variabl
 [`src/index.css`](src/index.css). Tailwind's `dark:` variant is bound to the Espresso theme via
 `darkMode: ['class', '[data-theme="espresso"]']`.
 
-Fonts: **Fraunces** (display) and **DM Sans** (body) are loaded from Google Fonts in `index.html`.
+Fonts: **Manrope** (headings) and **Inter** (body) are loaded from Google Fonts in `index.html`.

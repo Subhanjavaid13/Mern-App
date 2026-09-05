@@ -9,7 +9,7 @@ export default function NotesEmpty({ query, onClearSearch }) {
       <EmptyState
         icon={Search}
         title={`No matches for “${query}”`}
-        description="Try a different word, or clear the search to see everything again."
+        description="Try a different word, or clear the search to see all notes."
         action={
           <Button variant="outline" leftIcon={X} onClick={onClearSearch}>
             Clear search
@@ -17,7 +17,7 @@ export default function NotesEmpty({ query, onClearSearch }) {
         }
         secondaryAction={
           <Button to="/create" leftIcon={Plus}>
-            Write a new note
+            New note
           </Button>
         }
       />
@@ -27,11 +27,11 @@ export default function NotesEmpty({ query, onClearSearch }) {
   return (
     <EmptyState
       icon={NotebookPen}
-      title="Your notebook is empty"
-      description="Every great idea started as a scribble. Write your first note and it will show up right here."
+      title="No notes yet"
+      description="Create your first note and it will show up here."
       action={
-        <Button to="/create" size="lg" leftIcon={Plus}>
-          Write your first note
+        <Button to="/create" leftIcon={Plus}>
+          Create a note
         </Button>
       }
     />

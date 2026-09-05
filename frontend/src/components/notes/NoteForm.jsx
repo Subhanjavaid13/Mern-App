@@ -1,17 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
-import {
-  AlignLeft,
-  CircleCheck,
-  Clock,
-  Eye,
-  Keyboard,
-  Lightbulb,
-  PenLine,
-  Save,
-  Type,
-  WholeWord,
-} from 'lucide-react'
+import { AlignLeft, CircleCheck, Clock, Eye, Keyboard, PenLine, Save, Type, WholeWord } from 'lucide-react'
 import { useDebounce } from '../../hooks/useDebounce'
 import { MOD_KEY, useHotkey } from '../../hooks/useHotkey'
 import { cn } from '../../utils/cn'
@@ -24,15 +13,6 @@ import Kbd from '../ui/Kbd'
 import SegmentedControl from '../ui/SegmentedControl'
 import Textarea from '../ui/Textarea'
 import NoteContent from './NoteContent'
-
-const TIPS = [
-  'Start with a title you would search for later.',
-  'One idea per note keeps things easy to find.',
-  'Leave a blank line between thoughts — it becomes a paragraph.',
-  'Write the messy version first. Tidy it later.',
-  'End with a question if you are not finished thinking.',
-]
-const TIP = TIPS[Math.floor(Math.random() * TIPS.length)]
 
 const MODE_OPTIONS = [
   { value: 'write', label: 'Write', icon: PenLine },
@@ -112,7 +92,7 @@ export default function NoteForm({
 
   /* Let the user know we picked up where they left off */
   useEffect(() => {
-    if (init.restored) toast('Draft restored from last time.', { id: 'draft-restored', icon: '📝' })
+    if (init.restored) toast('Draft restored.', { id: 'draft-restored' })
   }, [init.restored])
 
   const stats = useMemo(
@@ -188,23 +168,30 @@ export default function NoteForm({
         ? 'Saving draft…'
         : 'Draft saved'
 
+  const details = [
+    { icon: WholeWord, label: 'Words', value: stats.words.toLocaleString() },
+    { icon: Type, label: 'Characters', value: stats.characters.toLocaleString() },
+    { icon: AlignLeft, label: 'Sentences', value: stats.sentences.toLocaleString() },
+    { icon: Clock, label: 'Reading time', value: `${stats.minutes} min` },
+  ]
+
   return (
     <form
       onSubmit={handleSubmit}
       noValidate
       className={cn(
-        'grid gap-6 animate-fade-up lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start',
+        'grid gap-4 animate-fade-up lg:grid-cols-[minmax(0,1fr)_16rem] lg:items-start',
         className,
       )}
     >
       {/* ------------------------------------------------ Editor */}
       <Card padding="none" className="overflow-hidden">
-        <div className="flex items-center justify-between gap-3 border-b border-base-300/60 bg-base-200/40 px-4 py-2.5 sm:px-6">
-          <div className="flex min-w-0 items-center gap-2 text-xs font-medium text-base-content/55">
+        <div className="flex items-center justify-between gap-3 border-b border-base-300/60 bg-base-200/40 px-4 py-2">
+          <div className="flex min-w-0 items-center gap-1.5 text-xs font-medium text-base-content/55">
             {draftLabel ? (
               <>
                 {draftPending && hasContent ? (
-                  <span className="size-2 shrink-0 rounded-full bg-secondary animate-pulse-soft" aria-hidden="true" />
+                  <span className="size-1.5 shrink-0 rounded-full bg-primary animate-pulse-soft" aria-hidden="true" />
                 ) : (
                   <CircleCheck
                     className={cn('size-3.5 shrink-0', hasContent ? 'text-success' : 'text-base-content/40')}
@@ -225,7 +212,7 @@ export default function NoteForm({
           <SegmentedControl size="sm" label="Editor mode" value={mode} onChange={setMode} options={MODE_OPTIONS} />
         </div>
 
-        <div className="p-5 sm:p-8">
+        <div className="p-4 sm:p-6">
           {mode === 'write' ? (
             <>
               <label htmlFor="note-title" className="sr-only">
@@ -239,14 +226,14 @@ export default function NoteForm({
                 onChange={update('title')}
                 onBlur={blur('title')}
                 maxLength={LIMITS.TITLE_MAX + 20}
-                placeholder="Give it a title…"
+                placeholder="Title"
                 autoFocus={!values.title}
                 autoComplete="off"
                 aria-invalid={showError('title') ? true : undefined}
                 aria-describedby={showError('title') ? 'note-title-error' : undefined}
-                className="w-full bg-transparent font-display text-2xl font-semibold tracking-tight placeholder:text-base-content/30 focus:outline-none sm:text-3xl"
+                className="w-full bg-transparent font-display text-xl font-bold tracking-tight placeholder:text-base-content/35 focus:outline-none sm:text-2xl"
               />
-              <div className="mt-1.5 flex items-start justify-between gap-3 text-xs">
+              <div className="mt-1 flex items-start justify-between gap-3 text-xs">
                 {showError('title') ? (
                   <p id="note-title-error" className="text-error" role="alert">
                     {showError('title')}
@@ -264,7 +251,7 @@ export default function NoteForm({
                 </span>
               </div>
 
-              <div className="my-5 h-px bg-gradient-to-r from-base-300 via-base-300/50 to-transparent" aria-hidden="true" />
+              <div className="my-4 h-px bg-base-300/70" aria-hidden="true" />
 
               <Textarea
                 ref={contentRef}
@@ -273,28 +260,28 @@ export default function NoteForm({
                 variant="ghost"
                 lined
                 autoGrow
-                minRows={12}
+                minRows={10}
                 value={values.content}
                 onChange={update('content')}
                 onBlur={blur('content')}
-                placeholder="Start writing… what's on your mind?"
+                placeholder="Write your note…"
                 error={showError('content')}
                 showCount
                 maxLength={LIMITS.CONTENT_MAX}
               />
             </>
           ) : (
-            <div className="min-h-[24rem] animate-fade-in">
-              <h2 className="font-display text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
+            <div className="min-h-[20rem] animate-fade-in">
+              <h2 className="font-display text-xl font-bold tracking-tight text-balance sm:text-2xl">
                 {values.title.trim() || <span className="text-base-content/35">Untitled note</span>}
               </h2>
-              <div className="my-5 h-px bg-gradient-to-r from-base-300 via-base-300/50 to-transparent" aria-hidden="true" />
+              <div className="my-4 h-px bg-base-300/70" aria-hidden="true" />
               <NoteContent content={values.content} />
             </div>
           )}
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-base-300/60 bg-base-200/40 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <div className="flex flex-col gap-3 border-t border-base-300/60 bg-base-200/40 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-base-content/55">
             <span className="inline-flex items-center gap-1.5">
               <WholeWord className="size-3.5" aria-hidden="true" />
@@ -304,7 +291,7 @@ export default function NoteForm({
               <Clock className="size-3.5" aria-hidden="true" />
               {stats.minutes} min read
             </span>
-            <span className="hidden items-center gap-1.5 sm:inline-flex">
+            <span className="hidden items-center gap-1 sm:inline-flex">
               <Kbd>{MOD_KEY}</Kbd>
               <Kbd>S</Kbd>
               <span className="ml-0.5">to save</span>
@@ -312,11 +299,11 @@ export default function NoteForm({
           </div>
           <div className="flex items-center justify-end gap-2">
             {onCancel && (
-              <Button variant="ghost" onClick={onCancel} disabled={submitting}>
+              <Button variant="ghost" size="sm" onClick={onCancel} disabled={submitting}>
                 Cancel
               </Button>
             )}
-            <Button type="submit" leftIcon={Save} loading={submitting}>
+            <Button type="submit" size="sm" leftIcon={Save} loading={submitting}>
               {submitLabel}
             </Button>
           </div>
@@ -325,21 +312,16 @@ export default function NoteForm({
 
       {/* ------------------------------------------------ Sidebar */}
       {showSidebar && (
-        <aside className="space-y-4 lg:sticky lg:top-24">
+        <aside className="space-y-3 lg:sticky lg:top-[4.25rem]">
           <Card padding="sm">
-            <h3 className="text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-base-content/50">
-              At a glance
+            <h3 className="text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-base-content/50">
+              Details
             </h3>
-            <dl className="mt-3 space-y-2.5 text-sm">
-              {[
-                { icon: WholeWord, label: 'Words', value: stats.words.toLocaleString() },
-                { icon: Type, label: 'Characters', value: stats.characters.toLocaleString() },
-                { icon: AlignLeft, label: 'Sentences', value: stats.sentences.toLocaleString() },
-                { icon: Clock, label: 'Reading time', value: `${stats.minutes} min` },
-              ].map(({ icon: Icon, label, value }) => (
+            <dl className="mt-2.5 space-y-2 text-sm">
+              {details.map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-center justify-between gap-3">
                   <dt className="inline-flex items-center gap-2 text-base-content/65">
-                    <Icon className="size-4 text-secondary" aria-hidden="true" />
+                    <Icon className="size-4 text-base-content/40" aria-hidden="true" />
                     {label}
                   </dt>
                   <dd className="font-semibold tabular-nums">{value}</dd>
@@ -349,23 +331,16 @@ export default function NoteForm({
           </Card>
 
           <Card padding="sm">
-            <h3 className="inline-flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-base-content/50">
+            <h3 className="inline-flex items-center gap-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-base-content/50">
               <Keyboard className="size-3.5" aria-hidden="true" />
               Shortcuts
             </h3>
-            <ul className="mt-3 space-y-2 text-sm text-base-content/70">
+            <ul className="mt-2.5 space-y-2 text-sm text-base-content/70">
               <li className="flex items-center justify-between gap-3">
                 <span>Save</span>
                 <span className="flex gap-1">
                   <Kbd>{MOD_KEY}</Kbd>
                   <Kbd>S</Kbd>
-                </span>
-              </li>
-              <li className="flex items-center justify-between gap-3">
-                <span>Save (alt)</span>
-                <span className="flex gap-1">
-                  <Kbd>{MOD_KEY}</Kbd>
-                  <Kbd>↵</Kbd>
                 </span>
               </li>
               <li className="flex items-center justify-between gap-3">
@@ -375,15 +350,11 @@ export default function NoteForm({
                   <Kbd>K</Kbd>
                 </span>
               </li>
+              <li className="flex items-center justify-between gap-3">
+                <span>New note</span>
+                <Kbd>N</Kbd>
+              </li>
             </ul>
-          </Card>
-
-          <Card padding="sm" className="bg-gradient-to-br from-secondary/15 via-base-100 to-base-100">
-            <h3 className="inline-flex items-center gap-2 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-base-content/50">
-              <Lightbulb className="size-3.5 text-warning" aria-hidden="true" />
-              Writing tip
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-base-content/75">{TIP}</p>
           </Card>
         </aside>
       )}

@@ -5,15 +5,16 @@ import { cn } from '../../utils/cn'
 import { BUTTON_VARIANTS } from './buttonStyles'
 import Tooltip from './Tooltip'
 
+/** Compact square sizes: 28 / 32 / 36 / 44 px */
 const SIZES = {
-  xs: { btn: 'btn-xs size-7 min-h-0', icon: 'size-3.5' },
-  sm: { btn: 'btn-sm size-9 min-h-0', icon: 'size-4' },
-  md: { btn: 'size-11 min-h-0', icon: 'size-5' },
-  lg: { btn: 'size-14 min-h-0', icon: 'size-6' },
+  xs: { btn: 'size-7 min-h-0', icon: 'size-3.5' },
+  sm: { btn: 'size-8 min-h-0', icon: 'size-4' },
+  md: { btn: 'size-9 min-h-0', icon: 'size-[1.125rem]' },
+  lg: { btn: 'size-11 min-h-0', icon: 'size-5' },
 }
 
 /**
- * Circular icon-only button with an accessible label and optional tooltip.
+ * Icon-only button with an accessible label and optional tooltip.
  *
  *   <IconButton icon={Trash2} label="Delete note" variant="danger-soft" />
  */
@@ -34,7 +35,7 @@ const IconButton = forwardRef(function IconButton(
 ) {
   const s = SIZES[size] ?? SIZES.md
   const classes = cn(
-    'btn btn-circle shrink-0 border transition-all duration-200 active:scale-95',
+    'btn btn-circle shrink-0 border p-0 shadow-none transition-colors duration-150 active:scale-95',
     BUTTON_VARIANTS[variant] ?? BUTTON_VARIANTS.ghost,
     s.btn,
     className,

@@ -38,34 +38,3 @@ export function toParagraphs(text = '') {
     .map((p) => p.trim())
     .filter(Boolean)
 }
-
-/** Deterministic small integer hash for a string (used to pick card accents) */
-export function hashString(str = '') {
-  let hash = 0
-  for (let i = 0; i < str.length; i += 1) {
-    hash = (hash * 31 + str.charCodeAt(i)) | 0
-  }
-  return Math.abs(hash)
-}
-
-/**
- * Card accent palette. Every entry lives inside the warm chocolate/caramel
- * family so notes feel varied without breaking the theme.
- */
-export const ACCENTS = [
-  'bg-gradient-to-r from-primary to-secondary',
-  'bg-gradient-to-r from-secondary to-accent',
-  'bg-gradient-to-r from-accent to-warning',
-  'bg-gradient-to-r from-warning to-secondary',
-  'bg-gradient-to-r from-primary to-accent',
-  'bg-gradient-to-r from-success/80 to-accent',
-]
-
-export function accentFor(seed = '') {
-  return ACCENTS[hashString(String(seed)) % ACCENTS.length]
-}
-
-export function initialOf(text = '') {
-  const first = String(text).trim().charAt(0)
-  return first ? first.toUpperCase() : '·'
-}

@@ -34,18 +34,18 @@ export default function Alert({
     <div
       role={tone === 'error' || tone === 'warning' ? 'alert' : 'status'}
       className={cn(
-        'flex items-start gap-4 rounded-2xl border p-4 sm:p-5 animate-fade-up',
+        'flex items-start gap-3.5 rounded-box border p-4 animate-fade-up',
         t.box,
         className,
       )}
     >
-      <div className={cn('grid size-10 shrink-0 place-items-center rounded-xl', t.icon_)}>
-        <Icon className="size-5" aria-hidden="true" />
+      <div className={cn('grid size-9 shrink-0 place-items-center rounded-lg', t.icon_)}>
+        <Icon className="size-4" aria-hidden="true" />
       </div>
       <div className="min-w-0 flex-1">
         {title && <p className="font-semibold leading-snug">{title}</p>}
         {children && <div className="mt-1 text-sm leading-relaxed text-base-content/70">{children}</div>}
-        {action && <div className="mt-3">{action}</div>}
+        {action && <div className="mt-2.5">{action}</div>}
       </div>
       {onDismiss && (
         <IconButton icon={X} label="Dismiss" size="sm" tooltip={false} onClick={onDismiss} className="-mr-1 -mt-1" />

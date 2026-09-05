@@ -51,7 +51,7 @@ const SearchBar = forwardRef(function SearchBar(
       aria-label="Search notes"
       autoComplete="off"
       className={className}
-      inputClassName="h-11 rounded-xl [&::-webkit-search-cancel-button]:hidden"
+      inputClassName="[&::-webkit-search-cancel-button]:hidden"
       rightSlot={
         value ? (
           <button
@@ -60,7 +60,7 @@ const SearchBar = forwardRef(function SearchBar(
               onChange('')
               innerRef.current?.focus()
             }}
-            className="grid size-7 place-items-center rounded-full text-base-content/50 transition-colors hover:bg-base-200 hover:text-base-content"
+            className="grid size-6 place-items-center rounded-full text-base-content/50 transition-colors hover:bg-base-200 hover:text-base-content"
             aria-label="Clear search"
           >
             <X className="size-4" aria-hidden="true" />

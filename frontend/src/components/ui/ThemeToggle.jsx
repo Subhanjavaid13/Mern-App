@@ -12,7 +12,7 @@ export default function ThemeToggle({ className }) {
     <Tooltip label={label} position="bottom">
       <label
         className={cn(
-          'swap swap-rotate btn btn-circle btn-ghost size-11 min-h-0 border border-transparent text-base-content/80 transition-colors hover:border-base-300 hover:bg-base-100',
+          'swap swap-rotate btn btn-circle btn-ghost size-9 min-h-0 border border-transparent text-base-content/75 shadow-none transition-colors hover:bg-base-content/[0.06] hover:text-base-content',
           className,
         )}
       >
@@ -23,8 +23,8 @@ export default function ThemeToggle({ className }) {
           aria-label={label}
           className="sr-only"
         />
-        <Sun className="swap-on size-5" aria-hidden="true" />
-        <Moon className="swap-off size-5" aria-hidden="true" />
+        <Sun className="swap-on size-[1.125rem]" aria-hidden="true" />
+        <Moon className="swap-off size-[1.125rem]" aria-hidden="true" />
       </label>
     </Tooltip>
   )

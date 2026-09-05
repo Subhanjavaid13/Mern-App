@@ -3,9 +3,8 @@ import { cn } from '../../utils/cn'
 
 const VARIANTS = {
   bordered:
-    'input input-bordered border-base-300 bg-base-100 focus:border-secondary focus:outline-none focus:ring-4 focus:ring-secondary/20',
-  ghost:
-    'w-full border-0 bg-transparent px-0 focus:outline-none focus:ring-0',
+    'input input-bordered h-10 min-h-0 rounded-btn border-base-300 bg-base-100 px-3.5 text-sm focus:border-primary/60 focus:outline-none focus:ring-2 focus:ring-primary/15',
+  ghost: 'w-full border-0 bg-transparent px-0 focus:outline-none focus:ring-0',
 }
 
 /**
@@ -36,7 +35,7 @@ const Input = forwardRef(function Input(
   return (
     <div className={cn('form-control w-full', className)}>
       {label && (
-        <label htmlFor={inputId} className="label pb-1.5 pt-0">
+        <label htmlFor={inputId} className="label pb-1 pt-0">
           <span className="label-text text-sm font-medium text-base-content/80">{label}</span>
         </label>
       )}
@@ -44,7 +43,7 @@ const Input = forwardRef(function Input(
       <div className="relative">
         {LeftIcon && (
           <LeftIcon
-            className="pointer-events-none absolute left-3.5 top-1/2 size-[1.125rem] -translate-y-1/2 text-base-content/40"
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-base-content/40"
             aria-hidden="true"
           />
         )}
@@ -52,11 +51,11 @@ const Input = forwardRef(function Input(
           ref={ref}
           id={inputId}
           className={cn(
-            'w-full text-base-content placeholder:text-base-content/35 transition-all duration-200',
+            'w-full text-base-content placeholder:text-base-content/40 transition-[border-color,box-shadow] duration-150',
             VARIANTS[variant] ?? VARIANTS.bordered,
-            LeftIcon && 'pl-11',
-            rightSlot && 'pr-12',
-            error && 'border-error focus:border-error focus:ring-error/20',
+            LeftIcon && 'pl-9',
+            rightSlot && 'pr-11',
+            error && 'border-error focus:border-error focus:ring-error/15',
             inputClassName,
           )}
           aria-invalid={error ? true : undefined}
@@ -64,7 +63,7 @@ const Input = forwardRef(function Input(
           {...props}
         />
         {rightSlot && (
-          <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
+          <div className="absolute right-1.5 top-1/2 flex -translate-y-1/2 items-center gap-1">
             {rightSlot}
           </div>
         )}
@@ -73,7 +72,7 @@ const Input = forwardRef(function Input(
       {message && (
         <p
           id={messageId}
-          className={cn('mt-1.5 text-xs', error ? 'text-error' : 'text-base-content/55')}
+          className={cn('mt-1 text-xs', error ? 'text-error' : 'text-base-content/55')}
           role={error ? 'alert' : undefined}
         >
           {message}

@@ -20,49 +20,47 @@ export default function Navbar() {
   useHotkey('n', () => navigate('/create'))
 
   return (
-    <header className="sticky top-0 z-40">
-      <div className="h-[3px] bg-gradient-to-r from-primary via-secondary to-accent" aria-hidden="true" />
-      <div className="border-b border-base-300/60 bg-base-200/80 backdrop-blur-xl">
-        <Container className="flex h-16 items-center gap-3">
-          <Logo />
+    <header className="sticky top-0 z-40 border-b border-base-300/70 bg-base-100/90 backdrop-blur-xl">
+      <Container className="flex h-14 items-center gap-3">
+        <Logo />
 
-          <nav className="ml-4 hidden items-center gap-1 md:flex" aria-label="Primary">
-            {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={end}
-                className={({ isActive }) =>
-                  cn(
-                    'inline-flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200',
-                    isActive
-                      ? 'bg-base-100 text-primary shadow-soft'
-                      : 'text-base-content/60 hover:bg-base-100/70 hover:text-base-content',
-                  )
-                }
-              >
-                <Icon className="size-4" aria-hidden="true" />
-                {label}
-              </NavLink>
-            ))}
-          </nav>
+        <nav className="ml-3 hidden items-center gap-1 md:flex" aria-label="Primary">
+          {NAV_ITEMS.map(({ to, label, icon: Icon, end }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                cn(
+                  'inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150',
+                  isActive
+                    ? 'bg-base-200 text-base-content'
+                    : 'text-base-content/60 hover:bg-base-200/60 hover:text-base-content',
+                )
+              }
+            >
+              <Icon className="size-4" aria-hidden="true" />
+              {label}
+            </NavLink>
+          ))}
+        </nav>
 
-          <div className="ml-auto flex items-center gap-2">
-            <ThemeToggle />
-            <Button to="/create" leftIcon={Plus} className="hidden sm:inline-flex">
-              New note
-            </Button>
-            <IconButton
-              to="/create"
-              icon={Plus}
-              label="New note"
-              variant="primary"
-              className="sm:hidden"
-              tooltip={false}
-            />
-          </div>
-        </Container>
-      </div>
+        <div className="ml-auto flex items-center gap-1.5">
+          <ThemeToggle />
+          <Button to="/create" size="sm" leftIcon={Plus} className="hidden sm:inline-flex">
+            New note
+          </Button>
+          <IconButton
+            to="/create"
+            icon={Plus}
+            label="New note"
+            variant="primary"
+            size="sm"
+            className="sm:hidden"
+            tooltip={false}
+          />
+        </div>
+      </Container>
     </header>
   )
 }

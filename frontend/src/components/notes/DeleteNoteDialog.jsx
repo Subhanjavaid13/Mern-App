@@ -17,7 +17,7 @@ export default function DeleteNoteDialog({ note, open, onClose, onConfirm, loadi
       confirmLabel="Delete note"
     >
       {note && (
-        <div className="rounded-xl border border-base-300/80 bg-base-200/60 px-4 py-3">
+        <div className="rounded-lg border border-base-300/80 bg-base-200/60 px-3.5 py-2.5">
           <p className="line-clamp-1 font-semibold">{note.title}</p>
           <p className="mt-0.5 line-clamp-2 text-sm text-base-content/60">{excerpt(note.content, 120)}</p>
         </div>

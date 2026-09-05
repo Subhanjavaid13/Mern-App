@@ -7,8 +7,8 @@ import { BUTTON_SIZES, BUTTON_VARIANTS } from './buttonStyles'
 const ICON_SIZES = {
   xs: 'size-3.5',
   sm: 'size-4',
-  md: 'size-[1.125rem]',
-  lg: 'size-5',
+  md: 'size-4',
+  lg: 'size-[1.125rem]',
 }
 
 /**
@@ -38,13 +38,13 @@ const Button = forwardRef(function Button(
   ref,
 ) {
   const classes = cn(
-    'btn gap-2 rounded-btn font-semibold normal-case tracking-[0.01em] transition-all duration-200',
+    'btn gap-2 rounded-btn font-semibold normal-case shadow-none transition-colors duration-150',
     'active:scale-[0.98] disabled:opacity-60',
     BUTTON_VARIANTS[variant] ?? BUTTON_VARIANTS.primary,
     BUTTON_SIZES[size] ?? BUTTON_SIZES.md,
     fullWidth && 'w-full',
     loading && 'pointer-events-none',
-    !children && 'px-0 aspect-square',
+    !children && 'aspect-square px-0',
     className,
   )
 

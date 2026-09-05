@@ -20,26 +20,6 @@ import NotesSkeleton from '../components/notes/NotesSkeleton'
 import NotesToolbar from '../components/notes/NotesToolbar'
 import RateLimitBanner from '../components/notes/RateLimitBanner'
 
-/** Hand-drawn underline under the hero's highlighted word */
-function Squiggle() {
-  return (
-    <svg
-      className="absolute -bottom-1.5 left-0 h-3 w-full text-secondary"
-      viewBox="0 0 200 12"
-      preserveAspectRatio="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M2 8c30-6 60-6 90 0s60 6 106-2"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
 export default function HomePage() {
   const [notes, setNotes] = useState([])
   const [status, setStatus] = useState('loading') // loading | ready | error | rate-limited
@@ -105,42 +85,30 @@ export default function HomePage() {
 
   return (
     <>
-      <Container className="pb-24 pt-8 sm:pt-12 lg:pt-16">
-        {/* ------------------------------------------------ Hero */}
-        <section className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-end">
+      <Container className="pb-16 pt-6 sm:pt-8 lg:pt-10">
+        {/* ------------------------------------------------ Header */}
+        <section className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-center">
           <div className="animate-fade-up">
-            <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-secondary">
-              <span className="h-px w-6 bg-secondary/60" aria-hidden="true" />
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-base-content/50">
               {greetingFor(today)} · {formatLongDate(today)}
             </p>
-            <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl">
-              Your thoughts,{' '}
-              <span className="relative inline-block font-medium italic text-primary">
-                brewed
-                <Squiggle />
-              </span>{' '}
-              fresh.
+            <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+              Your notes, all in one place.
             </h1>
-            <p className="mt-5 max-w-xl text-pretty text-lg text-base-content/65">
-              Capture ideas, plans and half-formed thoughts in one warm, quiet place. No folders, no
-              fuss — just you and the page.
+            <p className="mt-2.5 max-w-xl text-pretty text-base-content/65 sm:text-lg">
+              Capture ideas, plans and quick thoughts. Search, sort and edit them from anywhere.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Button to="/create" size="lg" leftIcon={Plus}>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              <Button to="/create" leftIcon={Plus}>
                 New note
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                leftIcon={Search}
-                onClick={() => searchRef.current?.focus()}
-              >
+              <Button variant="outline" leftIcon={Search} onClick={() => searchRef.current?.focus()}>
                 Search notes
               </Button>
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1 animate-fade-up delay-2">
+          <div className="grid gap-2.5 sm:grid-cols-3 lg:grid-cols-1 animate-fade-up delay-1">
             <StatCard icon={Notebook} label="Notes" value={summary.count} loading={loading} />
             <StatCard
               icon={Type}
@@ -159,16 +127,16 @@ export default function HomePage() {
         </section>
 
         {/* ------------------------------------------------ Toolbar */}
-        <section className="z-30 mt-10 animate-fade-up delay-3 md:sticky md:top-[4.6rem]">
+        <section className="z-30 mt-8 animate-fade-up delay-2 md:sticky md:top-[3.75rem]">
           <Card
-            padding="sm"
-            className="flex flex-col gap-3 bg-base-100/90 backdrop-blur-xl md:flex-row md:items-center"
+            padding="none"
+            className="flex flex-col gap-2.5 bg-base-100/95 p-2.5 backdrop-blur-xl md:flex-row md:items-center"
           >
             <SearchBar
               ref={searchRef}
               value={query}
               onChange={setQuery}
-              className="md:max-w-xs lg:max-w-md"
+              className="md:max-w-xs lg:max-w-sm"
             />
             <NotesToolbar
               className="md:ml-auto"
@@ -184,7 +152,7 @@ export default function HomePage() {
         </section>
 
         {/* ------------------------------------------------ Notes */}
-        <section className="mt-6" aria-label="Notes">
+        <section className="mt-5" aria-label="Notes">
           {loading && <NotesSkeleton view={view} />}
 
           {status === 'rate-limited' && <RateLimitBanner onRetry={retry} />}

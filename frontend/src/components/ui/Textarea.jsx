@@ -80,7 +80,7 @@ const Textarea = forwardRef(function Textarea(
         value={value}
         maxLength={maxLength}
         className={cn(
-          'w-full resize-none px-4 py-3 text-base leading-8 text-base-content placeholder:text-base-content/35 transition-[border-color,box-shadow] duration-200',
+          'w-full resize-none px-4 py-3 text-[0.9375rem] leading-8 text-base-content placeholder:text-base-content/40 transition-[border-color,box-shadow] duration-150',
           VARIANTS[variant] ?? VARIANTS.bordered,
           lined && 'paper-lines',
           autoGrow && 'overflow-hidden',

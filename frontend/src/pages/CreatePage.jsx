@@ -16,7 +16,7 @@ export default function CreatePage() {
     setSubmitting(true)
     try {
       await notesApi.createNote(data)
-      toast.success('Note saved. Nicely done!')
+      toast.success('Note saved.')
       navigate('/')
       return true
     } catch (error) {
@@ -28,18 +28,18 @@ export default function CreatePage() {
   }
 
   return (
-    <Container className="pb-24 pt-8 sm:pt-12">
+    <Container className="pb-16 pt-6 sm:pt-8">
       <BackLink to="/">All notes</BackLink>
 
       <PageHeader
-        className="mt-5"
-        eyebrow="Fresh page"
+        className="mt-4"
+        eyebrow="New note"
         title="Write a new note"
-        description="Capture the thought before it cools. Drafts save automatically while you type."
+        description="Drafts are saved automatically while you type."
       />
 
       <NoteForm
-        className="mt-8"
+        className="mt-6"
         autosaveKey={STORAGE_KEYS.DRAFT}
         onSubmit={handleSubmit}
         onCancel={() => navigate('/')}

@@ -35,7 +35,7 @@ export default function Dropdown({
         aria-haspopup="menu"
         aria-label={triggerLabel}
         className={cn(
-          'btn btn-sm h-9 min-h-0 gap-2 rounded-xl border-base-300 bg-base-100 px-3 text-sm font-semibold normal-case text-base-content shadow-none transition-all hover:border-secondary/60 hover:bg-base-200/70 active:scale-[0.98]',
+          'btn h-9 min-h-0 gap-2 rounded-btn border-base-300 bg-base-100 px-3 text-sm font-medium normal-case text-base-content shadow-none transition-colors hover:border-base-content/25 hover:bg-base-200/70 active:scale-[0.98]',
           triggerClassName,
         )}
       >
@@ -46,12 +46,12 @@ export default function Dropdown({
         tabIndex={0}
         role="menu"
         className={cn(
-          'dropdown-content menu z-40 mt-2 w-56 rounded-2xl border border-base-300/70 bg-base-100 p-1.5 shadow-lift animate-scale-in',
+          'dropdown-content menu z-40 mt-1.5 w-52 rounded-box border border-base-300/70 bg-base-100 p-1 shadow-lift animate-scale-in',
           menuClassName,
         )}
       >
         {label && (
-          <li className="menu-title px-3 pb-1 pt-2 text-[0.6875rem] font-semibold uppercase tracking-[0.12em] text-base-content/45">
+          <li className="menu-title px-2.5 pb-1 pt-1.5 text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-base-content/45">
             {label}
           </li>
         )}
@@ -70,7 +70,7 @@ export default function Dropdown({
                   closeMenu()
                 }}
                 className={cn(
-                  'flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm transition-colors',
+                  'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm transition-colors',
                   item.active
                     ? 'bg-primary/10 font-semibold text-primary'
                     : 'text-base-content/80 hover:bg-base-200 hover:text-base-content',
