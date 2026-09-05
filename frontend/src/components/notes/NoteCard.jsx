@@ -28,7 +28,7 @@ export default function NoteCard({ note, onDelete, index = 0, className }) {
         <h3 className="font-display text-lg font-bold leading-snug tracking-tight sm:text-xl">
           <Link
             to={`/note/${note._id}`}
-            className="line-clamp-2 transition-colors after:absolute after:inset-0 after:content-[''] hover:text-primary focus:outline-none"
+            className="line-clamp-2 transition-colors after:absolute after:inset-0 after:content-[''] hover:text-[#D9661A] focus:outline-none dark:hover:text-primary"
           >
             {note.title}
           </Link>

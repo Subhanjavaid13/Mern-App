@@ -2,7 +2,7 @@
 export const BUTTON_VARIANTS = {
   primary: 'btn-primary border-primary text-primary-content hover:border-primary',
   secondary: 'btn-secondary border-secondary',
-  soft: 'border-transparent bg-primary/10 text-primary hover:border-transparent hover:bg-primary/[0.16]',
+  soft: 'border-transparent bg-primary/15 text-base-content hover:border-transparent hover:bg-primary/25',
   outline:
     'border-base-300 bg-base-100 text-base-content hover:border-base-content/25 hover:bg-base-200/70',
   ghost: 'btn-ghost text-base-content/75 hover:bg-base-content/[0.06] hover:text-base-content',

@@ -26,7 +26,7 @@ export default function NoteListItem({ note, onDelete, index = 0, className }) {
           <h3 className="font-display text-base font-bold leading-snug tracking-tight sm:text-lg">
             <Link
               to={`/note/${note._id}`}
-              className="line-clamp-1 transition-colors after:absolute after:inset-0 after:content-[''] hover:text-primary focus:outline-none"
+              className="line-clamp-1 transition-colors after:absolute after:inset-0 after:content-[''] hover:text-[#D9661A] focus:outline-none dark:hover:text-primary"
             >
               {note.title}
             </Link>

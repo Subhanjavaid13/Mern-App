@@ -20,6 +20,19 @@
   }
 
   html {
+    /* Inter is bundled with the app (see main.jsx); the stack falls back to the platform UI font */
+    font-family:
+      'Inter Variable',
+      'Inter',
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      Roboto,
+      'Helvetica Neue',
+      Arial,
+      sans-serif;
+    font-feature-settings: 'cv11', 'ss01', 'calt';
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
   }
@@ -27,6 +40,11 @@
   body {
     @apply min-h-dvh bg-base-200 font-sans text-base-content antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Headings: slightly tighter tracking reads cleaner at bold weights */
+  .font-display {
+    letter-spacing: -0.02em;
   }
 
   ::selection {

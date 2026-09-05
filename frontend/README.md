@@ -1,8 +1,8 @@
 # Cocoa Notes — frontend
 
 A warm, responsive notes UI built with React 19, Vite, Tailwind CSS 3, daisyUI 4, lucide-react icons,
-react-router and axios. Two themes ship out of the box: **Latte** (cream / beige / chocolate) and
-**Espresso** (warm charcoal surfaces with ember-orange accents). The choice is remembered in `localStorage`
+react-router and axios. Two themes ship out of the box: **Latte** (cream / beige with orange accents) and
+**Espresso** (warm charcoal surfaces with the same orange accents). The choice is remembered in `localStorage`
 and applied before first paint.
 
 ```bash
@@ -73,4 +73,6 @@ every component picks up a palette change automatically. Shadows are CSS variabl
 [`src/index.css`](src/index.css). Tailwind's `dark:` variant is bound to the Espresso theme via
 `darkMode: ['class', '[data-theme="espresso"]']`.
 
-Fonts: **Manrope** (headings) and **Inter** (body) are loaded from Google Fonts in `index.html`.
+Font: **Inter** for everything, self-hosted through `@fontsource-variable/inter` (imported in `src/main.jsx`), so
+there are no external font requests. The stack falls back to the platform UI font (Segoe UI, Roboto, Helvetica,
+Arial) if the file has not loaded yet.

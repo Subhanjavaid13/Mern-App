@@ -15,7 +15,7 @@ export default function PageHeader({ eyebrow, title, description, actions, class
     >
       <div className="min-w-0">
         {eyebrow && (
-          <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-primary/80">
+          <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-base-content/50">
             {eyebrow}
           </p>
         )}

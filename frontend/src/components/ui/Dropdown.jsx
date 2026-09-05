@@ -72,14 +72,14 @@ export default function Dropdown({
                 className={cn(
                   'flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-sm transition-colors',
                   item.active
-                    ? 'bg-primary/10 font-semibold text-primary'
+                    ? 'bg-primary/15 font-semibold text-base-content'
                     : 'text-base-content/80 hover:bg-base-200 hover:text-base-content',
                   item.danger && 'text-error hover:bg-error/10 hover:text-error',
                 )}
               >
                 {Icon && <Icon className="size-4 shrink-0 opacity-80" aria-hidden="true" />}
                 <span className="flex-1 text-left">{item.label}</span>
-                {item.active && <Check className="size-4 shrink-0" aria-hidden="true" />}
+                {item.active && <Check className="size-4 shrink-0 text-primary" aria-hidden="true" />}
               </button>
             </li>
           )

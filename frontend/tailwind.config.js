@@ -13,20 +13,25 @@ const shape = {
   '--tab-radius': '0.5rem',
 }
 
-/** "Latte" — warm cream paper, chocolate ink, caramel highlights (light) */
+/** Brand accents shared by both themes: bright orange, amber, peach */
+const brand = {
+  primary: '#FF8A3D',
+  'primary-content': '#231205',
+  secondary: '#FFAD62',
+  'secondary-content': '#231205',
+  accent: '#FFC98F',
+  'accent-content': '#231205',
+}
+
+/** "Latte" — cream paper, warm brown text, orange accents (light) */
 const latte = {
   'color-scheme': 'light',
-  primary: '#6B4630',
-  'primary-content': '#FBF5EC',
-  secondary: '#C4915F',
-  'secondary-content': '#2B1B12',
-  accent: '#A8774F',
-  'accent-content': '#FFF9F0',
+  ...brand,
   neutral: '#3E2A1E',
-  'neutral-content': '#F1E6D6',
-  'base-100': '#FDFAF4',
-  'base-200': '#F4ECDD',
-  'base-300': '#E3D3BA',
+  'neutral-content': '#F6EEE2',
+  'base-100': '#FFFCF7',
+  'base-200': '#F6EFE4',
+  'base-300': '#E6DAC6',
   'base-content': '#33241A',
   info: '#6F8FB0',
   'info-content': '#F4F8FC',
@@ -34,23 +39,15 @@ const latte = {
   'success-content': '#F1F8F1',
   warning: '#D89E3B',
   'warning-content': '#2B1E08',
-  error: '#BF5540',
+  error: '#C4573F',
   'error-content': '#FFF3F0',
   ...shape,
 }
 
-/**
- * "Espresso" — warm charcoal page and graphite surfaces (no brown),
- * lit by ember-orange and amber accents for strong contrast (dark)
- */
+/** "Espresso" — warm charcoal page, graphite surfaces, orange accents (dark) */
 const espresso = {
   'color-scheme': 'dark',
-  primary: '#F5873A',
-  'primary-content': '#1B0E05',
-  secondary: '#FFAE62',
-  'secondary-content': '#1F1207',
-  accent: '#FFCB8E',
-  'accent-content': '#241607',
+  ...brand,
   neutral: '#F4EFE8',
   'neutral-content': '#1B1815',
   'base-100': '#201D1A',
@@ -74,9 +71,32 @@ export default {
   darkMode: ['class', '[data-theme="espresso"]'],
   theme: {
     extend: {
+      /* Inter everywhere (self-hosted via @fontsource-variable/inter) with a solid system fallback stack */
       fontFamily: {
-        display: ['"Manrope"', '"Inter"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        sans: ['"Inter"', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: [
+          '"Inter Variable"',
+          '"Inter"',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+        ],
+        display: [
+          '"Inter Variable"',
+          '"Inter"',
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          '"Segoe UI"',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+        ],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
       /* Shadows are CSS variables so each theme can tune them (see index.css) */

@@ -8,7 +8,7 @@ import { cn } from '../../utils/cn'
  */
 export default function BackLink({ to, onClick, children = 'Back', className }) {
   const classes = cn(
-    'group inline-flex items-center gap-2 rounded-lg text-sm font-medium text-base-content/60 transition-colors hover:text-primary',
+    'group inline-flex items-center gap-2 rounded-lg text-sm font-medium text-base-content/60 transition-colors hover:text-base-content',
     className,
   )
   const inner = (
