@@ -43,6 +43,7 @@ function Squiggle() {
 export default function HomePage() {
   const [notes, setNotes] = useState([])
   const [status, setStatus] = useState('loading') // loading | ready | error | rate-limited
+  const [errorText, setErrorText] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
   const [query, setQuery] = useState('')
   const debouncedQuery = useDebounce(query, 200)
@@ -54,26 +55,25 @@ export default function HomePage() {
   const searchRef = useRef(null)
 
   useEffect(() => {
-    let active = true
+    const controller = new AbortController()
+
     notesApi
-      .getNotes()
+      .getNotes({ signal: controller.signal })
       .then((data) => {
-        if (!active) return
         setNotes(data)
         setStatus('ready')
       })
       .catch((error) => {
-        if (!active) return
-        if (error?.status === 429) {
+        if (notesApi.isCanceled(error)) return
+        if (error.status === 429) {
           setStatus('rate-limited')
         } else {
+          setErrorText(notesApi.errorMessage(error, "We couldn't reach your notes. Please try again."))
           setStatus('error')
-          toast.error('Could not load your notes.')
         }
       })
-    return () => {
-      active = false
-    }
+
+    return () => controller.abort()
   }, [reloadKey])
 
   const retry = () => {
@@ -97,11 +97,7 @@ export default function HomePage() {
       toast.success('Note deleted.')
       setNoteToDelete(null)
     } catch (error) {
-      toast.error(
-        error?.status === 429
-          ? 'Too many requests — take a breath and try again.'
-          : 'Could not delete the note.',
-      )
+      toast.error(notesApi.errorMessage(error, 'Could not delete the note.'))
     } finally {
       setDeleting(false)
     }
@@ -168,7 +164,12 @@ export default function HomePage() {
             padding="sm"
             className="flex flex-col gap-3 bg-base-100/90 backdrop-blur-xl md:flex-row md:items-center"
           >
-            <SearchBar ref={searchRef} value={query} onChange={setQuery} className="md:max-w-xs lg:max-w-md" />
+            <SearchBar
+              ref={searchRef}
+              value={query}
+              onChange={setQuery}
+              className="md:max-w-xs lg:max-w-md"
+            />
             <NotesToolbar
               className="md:ml-auto"
               total={notes.length}
@@ -192,7 +193,7 @@ export default function HomePage() {
             <EmptyState
               icon={CircleAlert}
               title="Something went wrong"
-              description="We couldn't reach your notes. Check your connection and try again."
+              description={errorText}
               action={
                 <Button leftIcon={RefreshCw} onClick={retry}>
                   Try again

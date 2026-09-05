@@ -20,11 +20,7 @@ export default function CreatePage() {
       navigate('/')
       return true
     } catch (error) {
-      toast.error(
-        error?.status === 429
-          ? 'Too many requests — take a breath and try again.'
-          : 'Could not save the note. Please try again.',
-      )
+      toast.error(notesApi.errorMessage(error, 'Could not save the note. Please try again.'))
       return false
     } finally {
       setSubmitting(false)

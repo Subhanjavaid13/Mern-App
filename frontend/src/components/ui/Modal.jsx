@@ -123,7 +123,7 @@ export default function Modal({
       </div>
 
       {dismissible && (
-        <form method="dialog" className="modal-backdrop bg-neutral/40 backdrop-blur-sm">
+        <form method="dialog" className="modal-backdrop bg-black/50 backdrop-blur-sm">
           <button type="submit" aria-label="Close dialog">
             close
           </button>

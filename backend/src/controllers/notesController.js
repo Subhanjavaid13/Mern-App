@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Note from "../models/Note.js"
 
 export async  function getAllNotes(_,res){
@@ -10,6 +11,19 @@ export async  function getAllNotes(_,res){
     }
 }
 
+export async function getNoteById(req,res){
+    try {
+        if(!mongoose.isValidObjectId(req.params.id)) return res.status(404).json({message:"Note not found"})
+
+        const note = await Note.findById(req.params.id);
+        if(!note) return res.status(404).json({message:"Note not found"})
+        res.status(200).json(note);
+    } catch (error) {
+        console.log("Error In Getting Note",error);
+        res.status(500).json({message:"Internal Server Error"})
+    }
+}
+
 export async function createNote(req,res){
     try {
         const {title,content} = req.body;
@@ -17,7 +31,7 @@ export async function createNote(req,res){
 
         const newNote = await note.save();
         res.status(201).json(newNote)
-        
+
     } catch (error) {
         console.log("Error In Creating Note",error);
         res.status(500).json({message:"Internal Server Error"})

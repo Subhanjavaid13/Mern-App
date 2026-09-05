@@ -1,38 +1,39 @@
 # Cocoa Notes — frontend
 
-A warm, responsive notes UI built with React 19, Vite, Tailwind CSS 3, daisyUI 4, lucide-react icons and react-router.
-Two themes ship out of the box: **Latte** (cream / beige / chocolate) and **Espresso** (dark roast). The choice is
-remembered in `localStorage` and applied before first paint, so there is no flash.
+A warm, responsive notes UI built with React 19, Vite, Tailwind CSS 3, daisyUI 4, lucide-react icons,
+react-router and axios. Two themes ship out of the box: **Latte** (cream / beige / chocolate) and
+**Espresso** (dark roast). The choice is remembered in `localStorage` and applied before first paint.
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5173  (proxies /api → http://localhost:5000)
 npm run build    # production bundle in dist/
 npm run lint
 ```
 
-## Wiring up the API
+Start the backend first (`cd ../backend && npm start`); it listens on the `PORT` from its `.env` (5000).
 
-All data access goes through one file: [`src/lib/notesApi.js`](src/lib/notesApi.js). It is currently a **mock**
-backed by `localStorage` and seeded from [`src/data/mockNotes.js`](src/data/mockNotes.js). Replace the body of
-each function with a real request and nothing else needs to change:
+## API layer
 
-| Function                       | Backend route            |
-| ------------------------------ | ------------------------ |
-| `getNotes()`                   | `GET    /api/notes`      |
-| `getNote(id)`                  | `GET    /api/notes/:id`  |
-| `createNote({ title, content })` | `POST   /api/notes`    |
-| `updateNote(id, { title, content })` | `PUT /api/notes/:id` |
-| `deleteNote(id)`               | `DELETE /api/notes/:id`  |
+- [`src/lib/http.js`](src/lib/http.js) — a single axios instance. Base URL is `VITE_API_URL` when set,
+  otherwise `/api`, which Vite proxies to the backend in development (see [`vite.config.js`](vite.config.js)).
+  A response interceptor turns every failure into an `ApiError` with a `status` (0 when the server is unreachable)
+  and the backend's `message`.
+- [`src/lib/notesApi.js`](src/lib/notesApi.js) — one function per route:
 
-Throw errors with a `status` property (`error.status = 429`, `404`, …). The pages already handle:
+| Function                             | Route                    |
+| ------------------------------------ | ------------------------ |
+| `getNotes(config?)`                  | `GET    /api/notes`      |
+| `getNote(id, config?)`               | `GET    /api/notes/:id`  |
+| `createNote({ title, content })`     | `POST   /api/notes`      |
+| `updateNote(id, { title, content })` | `PUT    /api/notes/:id`  |
+| `deleteNote(id)`                     | `DELETE /api/notes/:id`  |
 
-- `429` → the **rate-limit** screen on the home page and a friendly toast elsewhere
-- `404` → the **"note wandered off"** state on the detail page
-- anything else → an error state with a retry button
+Pages pass an `AbortController` signal so requests are cancelled on unmount, and map errors to UI states:
+`429` → rate-limit screen, `404` → "note wandered off", anything else → error state with a retry button.
 
-> The backend currently has no `GET /api/notes/:id` route. Either add one, or implement `getNote(id)` by
-> fetching the list and finding the note.
+For production, copy `.env.example` to `.env` and set `VITE_API_URL` to the deployed API. If the frontend
+and API live on different origins, enable CORS on the backend.
 
 ## Project layout
 
@@ -49,26 +50,26 @@ src/
 ├─ pages/        HomePage, CreatePage, NoteDetailPage (read + edit via ?edit=1), NotFoundPage
 ├─ hooks/        useTheme, useLocalStorage, useDebounce, useHotkey
 ├─ context/      ThemeProvider + theme context
-├─ lib/          notesApi.js  ← swap this for real requests
-├─ data/         mockNotes.js (sample content, safe to delete)
+├─ lib/          http.js (axios instance), notesApi.js (route functions)
 └─ utils/        cn, constants, date, text, notes helpers
 ```
 
 ## Keyboard shortcuts
 
-| Keys               | Action                              |
-| ------------------ | ----------------------------------- |
-| `⌘/Ctrl + K`       | Focus search (home)                 |
-| `N`                | New note (anywhere, outside inputs) |
-| `E`                | Edit the open note                  |
-| `⌘/Ctrl + S` / `⌘/Ctrl + Enter` | Save the note in the editor |
-| `Esc`              | Clear / leave the search box        |
+| Keys                            | Action                              |
+| ------------------------------- | ----------------------------------- |
+| `⌘/Ctrl + K`                    | Focus search (home)                 |
+| `N`                             | New note (anywhere, outside inputs) |
+| `E`                             | Edit the open note                  |
+| `⌘/Ctrl + S` / `⌘/Ctrl + Enter` | Save the note in the editor         |
+| `Esc`                           | Clear / leave the search box        |
 
 ## Theming
 
 Both themes are defined in [`tailwind.config.js`](tailwind.config.js) as daisyUI custom themes (`latte`,
 `espresso`). Colour tokens follow daisyUI naming (`primary`, `secondary`, `accent`, `base-100/200/300`, …), so
-every component picks up a palette change automatically. Tailwind's `dark:` variant is bound to the Espresso
-theme via `darkMode: ['class', '[data-theme="espresso"]']`.
+every component picks up a palette change automatically. Shadows are CSS variables tuned per theme in
+[`src/index.css`](src/index.css). Tailwind's `dark:` variant is bound to the Espresso theme via
+`darkMode: ['class', '[data-theme="espresso"]']`.
 
 Fonts: **Fraunces** (display) and **DM Sans** (body) are loaded from Google Fonts in `index.html`.

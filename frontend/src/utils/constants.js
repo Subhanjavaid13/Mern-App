@@ -11,7 +11,6 @@ export const STORAGE_KEYS = {
   VIEW: 'cocoa:view',
   SORT: 'cocoa:sort',
   DRAFT: 'cocoa:draft',
-  NOTES: 'cocoa:notes',
 }
 
 export const LIMITS = {

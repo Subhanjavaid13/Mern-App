@@ -39,28 +39,31 @@ const latte = {
   ...shape,
 }
 
-/** "Espresso" — deep roasted surfaces, caramel & gold accents (dark) */
+/**
+ * "Espresso" — dark roast page, mocha surfaces that clearly lift off it,
+ * visible cocoa borders and caramel-gold accents (dark)
+ */
 const espresso = {
   'color-scheme': 'dark',
-  primary: '#D9A876',
-  'primary-content': '#221610',
-  secondary: '#B07E58',
-  'secondary-content': '#FBF1E6',
-  accent: '#E8CBA6',
+  primary: '#E3B384',
+  'primary-content': '#26180F',
+  secondary: '#CD955F',
+  'secondary-content': '#1F150E',
+  accent: '#F0D6B4',
   'accent-content': '#2A1B12',
-  neutral: '#120C09',
-  'neutral-content': '#E9DCCB',
-  'base-100': '#271C16',
-  'base-200': '#1B130F',
-  'base-300': '#3D2E25',
-  'base-content': '#F0E5D6',
-  info: '#8FA9C6',
+  neutral: '#F3E8D8',
+  'neutral-content': '#2A1B12',
+  'base-100': '#332821',
+  'base-200': '#221A15',
+  'base-300': '#54433A',
+  'base-content': '#F6EDE0',
+  info: '#96B1CE',
   'info-content': '#0F1A26',
-  success: '#86B383',
+  success: '#93C08F',
   'success-content': '#0E1C0E',
-  warning: '#E3B458',
+  warning: '#EBBF63',
   'warning-content': '#2A1E07',
-  error: '#D97A62',
+  error: '#E4846D',
   'error-content': '#2A0F08',
   ...shape,
 }
@@ -76,11 +79,11 @@ export default {
         sans: ['"DM Sans"', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
+      /* Shadows are CSS variables so each theme can tune them (see index.css) */
       boxShadow: {
-        soft: '0 1px 2px rgba(60, 38, 20, 0.06), 0 10px 28px -14px rgba(60, 38, 20, 0.22)',
-        lift: '0 2px 4px rgba(60, 38, 20, 0.08), 0 24px 48px -18px rgba(60, 38, 20, 0.35)',
+        soft: 'var(--shadow-soft)',
+        lift: 'var(--shadow-lift)',
         glow: '0 0 0 4px rgba(196, 145, 95, 0.25)',
-        inset: 'inset 0 1px 0 rgba(255, 255, 255, 0.35)',
       },
       keyframes: {
         'fade-up': {

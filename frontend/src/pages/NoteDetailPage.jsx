@@ -47,27 +47,32 @@ export default function NoteDetailPage() {
 
   const [note, setNote] = useState(null)
   const [status, setStatus] = useState('loading') // loading | ready | not-found | error
+  const [errorText, setErrorText] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
   const [saving, setSaving] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
-    let active = true
+    const controller = new AbortController()
+
     notesApi
-      .getNote(id)
+      .getNote(id, { signal: controller.signal })
       .then((data) => {
-        if (!active) return
         setNote(data)
         setStatus('ready')
       })
       .catch((error) => {
-        if (!active) return
-        setStatus(error?.status === 404 ? 'not-found' : 'error')
+        if (notesApi.isCanceled(error)) return
+        if (error.status === 404) {
+          setStatus('not-found')
+        } else {
+          setErrorText(notesApi.errorMessage(error, "We couldn't load this note. Please try again."))
+          setStatus('error')
+        }
       })
-    return () => {
-      active = false
-    }
+
+    return () => controller.abort()
   }, [id, reloadKey])
 
   const retry = () => {
@@ -89,11 +94,7 @@ export default function NoteDetailPage() {
       stopEditing()
       return true
     } catch (error) {
-      toast.error(
-        error?.status === 429
-          ? 'Too many requests — take a breath and try again.'
-          : 'Could not save your changes.',
-      )
+      toast.error(notesApi.errorMessage(error, 'Could not save your changes.'))
       return false
     } finally {
       setSaving(false)
@@ -107,11 +108,7 @@ export default function NoteDetailPage() {
       toast.success('Note deleted.')
       navigate('/')
     } catch (error) {
-      toast.error(
-        error?.status === 429
-          ? 'Too many requests — take a breath and try again.'
-          : 'Could not delete the note.',
-      )
+      toast.error(notesApi.errorMessage(error, 'Could not delete the note.'))
       setDeleting(false)
     }
   }
@@ -155,7 +152,7 @@ export default function NoteDetailPage() {
         <EmptyState
           icon={CircleAlert}
           title="Something went wrong"
-          description="We couldn't load this note. Check your connection and try again."
+          description={errorText}
           action={
             <Button leftIcon={RefreshCw} onClick={retry}>
               Try again
@@ -217,7 +214,12 @@ export default function NoteDetailPage() {
             <Button variant="soft" size="sm" leftIcon={PenLine} onClick={startEditing}>
               Edit
             </Button>
-            <Button variant="danger-soft" size="sm" leftIcon={Trash2} onClick={() => setDeleteOpen(true)}>
+            <Button
+              variant="danger-soft"
+              size="sm"
+              leftIcon={Trash2}
+              onClick={() => setDeleteOpen(true)}
+            >
               Delete
             </Button>
           </div>
