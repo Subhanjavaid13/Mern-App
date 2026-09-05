@@ -1,20 +1,22 @@
-import React from 'react'
 import { Route, Routes } from 'react-router'
+import ThemeProvider from './context/ThemeProvider'
+import AppLayout from './components/layout/AppLayout'
 import HomePage from './pages/HomePage'
 import CreatePage from './pages/CreatePage'
 import NoteDetailPage from './pages/NoteDetailPage'
-import toast from 'react-hot-toast'
+import NotFoundPage from './pages/NotFoundPage'
 
-const App = () => {
+export default function App() {
   return (
-    <div>
+    <ThemeProvider>
       <Routes>
-        <Route path='/' element={<HomePage/>}/>
-        <Route path='/create' element={<CreatePage/>}/>
-        <Route path='/note/:id' element={<NoteDetailPage/>}/>
+        <Route element={<AppLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="create" element={<CreatePage />} />
+          <Route path="note/:id" element={<NoteDetailPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
       </Routes>
-    </div>
+    </ThemeProvider>
   )
 }
-
-export default App
