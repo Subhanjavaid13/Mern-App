@@ -16,11 +16,11 @@ Start the backend first (`cd ../backend && npm start`); it listens on the `PORT`
 
 ## API layer
 
-- [`src/lib/http.js`](src/lib/http.js) — a single axios instance. Base URL is `VITE_API_URL` when set,
+- [`src/lib/axios.js`](src/lib/axios.js) — a single axios instance (`api`). Base URL is `VITE_API_URL` when set,
   otherwise `/api`, which Vite proxies to the backend in development (see [`vite.config.js`](vite.config.js)).
   A response interceptor turns every failure into an `ApiError` with a `status` (0 when the server is unreachable)
   and the backend's `message`.
-- [`src/lib/notesApi.js`](src/lib/notesApi.js) — one function per route:
+- [`src/lib/notesApi.js`](src/lib/notesApi.js) — one function per route, each calling `api.get` / `api.post` / `api.put` / `api.delete`:
 
 | Function                             | Route                    |
 | ------------------------------------ | ------------------------ |
@@ -33,7 +33,7 @@ Start the backend first (`cd ../backend && npm start`); it listens on the `PORT`
 Pages pass an `AbortController` signal so requests are cancelled on unmount, and map errors to UI states:
 `404` → not-found screen, anything else → error state with a retry button.
 
-**Rate limiting (429).** The backend answers with `Retry-After` and a `retryAfter` (seconds) field. The HTTP layer
+**Rate limiting (429).** The backend answers with `Retry-After` and a `retryAfter` (seconds) field. The axios layer
 broadcasts every 429, and `RateLimitProvider` turns it into a countdown used across the app: a slim notice under
 the navbar, disabled Save / Delete buttons showing "Wait Ns", a toast with the wait time, and automatic retry of
 the failed page load once the window resets.
@@ -56,7 +56,7 @@ src/
 ├─ pages/        HomePage, CreatePage, NoteDetailPage (read + edit via ?edit=1), NotFoundPage
 ├─ hooks/        useTheme, useLocalStorage, useDebounce, useHotkey
 ├─ context/      ThemeProvider + theme context
-├─ lib/          http.js (axios instance), notesApi.js (route functions)
+├─ lib/          axios.js (shared axios instance), notesApi.js (route functions)
 └─ utils/        cn, constants, date, text, notes helpers
 ```
 

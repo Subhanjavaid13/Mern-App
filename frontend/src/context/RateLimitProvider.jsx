@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { onRateLimited } from '../lib/http'
+import { onRateLimited } from '../lib/axios'
 import { RateLimitContext } from './rateLimitContext'
 
 /**

@@ -40,17 +40,17 @@ function parseRetryAfter(response) {
 }
 
 /**
- * Shared axios instance.
+ * Shared axios instance used for every API call.
  * - In development, `/api` is proxied to the backend by Vite (see vite.config.js).
  * - In production, set VITE_API_URL (e.g. https://api.example.com/api).
  */
-const http = axios.create({
+export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 })
 
-http.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   (error) => {
     // Let cancelled requests (AbortController) pass through untouched
@@ -85,4 +85,4 @@ export function errorMessage(error, fallback = 'Something went wrong. Please try
   return fallback
 }
 
-export default http
+export default api
