@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { CircleAlert, Clock, Notebook, Plus, RefreshCw, Search, Type } from 'lucide-react'
 import { useDebounce } from '../hooks/useDebounce'
 import { useLocalStorage } from '../hooks/useLocalStorage'
+import { useRateLimit } from '../hooks/useRateLimit'
 import * as notesApi from '../lib/notesApi'
 import { STORAGE_KEYS, VIEW_MODES } from '../utils/constants'
 import { formatDateTime, formatLongDate, greetingFor, timeAgo } from '../utils/date'
@@ -33,6 +34,7 @@ export default function HomePage() {
   const [deleting, setDeleting] = useState(false)
   const [today] = useState(() => new Date())
   const searchRef = useRef(null)
+  const { subscribeReset } = useRateLimit()
 
   useEffect(() => {
     const controller = new AbortController()
@@ -60,6 +62,15 @@ export default function HomePage() {
     setStatus('loading')
     setReloadKey((k) => k + 1)
   }
+
+  /* When the list failed with 429, reload it as soon as the limit resets */
+  useEffect(() => {
+    if (status !== 'rate-limited') return undefined
+    return subscribeReset(() => {
+      setStatus('loading')
+      setReloadKey((k) => k + 1)
+    })
+  }, [status, subscribeReset])
 
   const visibleNotes = useMemo(
     () => sortNotes(filterNotes(notes, debouncedQuery), sort),

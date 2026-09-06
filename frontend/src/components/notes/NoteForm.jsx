@@ -3,6 +3,7 @@ import toast from 'react-hot-toast'
 import { AlignLeft, CircleCheck, Clock, Eye, Keyboard, PenLine, Save, Type, WholeWord } from 'lucide-react'
 import { useDebounce } from '../../hooks/useDebounce'
 import { MOD_KEY, useHotkey } from '../../hooks/useHotkey'
+import { useRateLimit } from '../../hooks/useRateLimit'
 import { cn } from '../../utils/cn'
 import { LIMITS } from '../../utils/constants'
 import { validateNote } from '../../utils/notes'
@@ -72,6 +73,7 @@ export default function NoteForm({
 
   const titleRef = useRef(null)
   const contentRef = useRef(null)
+  const { limited, secondsLeft } = useRateLimit()
 
   const debouncedValues = useDebounce(values, 600)
   const hasContent = Boolean(values.title.trim() || values.content.trim())
@@ -125,7 +127,7 @@ export default function NoteForm({
 
   const handleSubmit = async (event) => {
     event?.preventDefault()
-    if (submitting) return
+    if (submitting || limited) return
 
     const nextErrors = validateNote(values, LIMITS)
     setErrors(nextErrors)
@@ -303,8 +305,8 @@ export default function NoteForm({
                 Cancel
               </Button>
             )}
-            <Button type="submit" size="sm" leftIcon={Save} loading={submitting}>
-              {submitLabel}
+            <Button type="submit" size="sm" leftIcon={Save} loading={submitting} disabled={limited}>
+              {limited ? `Wait ${secondsLeft}s` : submitLabel}
             </Button>
           </div>
         </div>

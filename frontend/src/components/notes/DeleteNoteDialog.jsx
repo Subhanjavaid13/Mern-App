@@ -1,9 +1,12 @@
 import { Trash2 } from 'lucide-react'
+import { useRateLimit } from '../../hooks/useRateLimit'
 import { excerpt } from '../../utils/text'
 import ConfirmDialog from '../ui/ConfirmDialog'
 
 /** Confirmation dialog for deleting a note. */
 export default function DeleteNoteDialog({ note, open, onClose, onConfirm, loading = false }) {
+  const { limited, secondsLeft } = useRateLimit()
+
   return (
     <ConfirmDialog
       open={open}
@@ -14,7 +17,8 @@ export default function DeleteNoteDialog({ note, open, onClose, onConfirm, loadi
       icon={Trash2}
       title="Delete this note?"
       description="This can't be undone. The note will be gone for good."
-      confirmLabel="Delete note"
+      confirmLabel={limited ? `Wait ${secondsLeft}s` : 'Delete note'}
+      confirmDisabled={limited}
     >
       {note && (
         <div className="rounded-lg border border-base-300/80 bg-base-200/60 px-3.5 py-2.5">

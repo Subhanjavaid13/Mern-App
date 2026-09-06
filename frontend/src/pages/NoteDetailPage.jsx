@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from 'react-router'
 import toast from 'react-hot-toast'
 import { CircleAlert, Copy, FileText, Home, PenLine, Plus, RefreshCw, Trash2 } from 'lucide-react'
 import { useHotkey } from '../hooks/useHotkey'
+import { useRateLimit } from '../hooks/useRateLimit'
 import * as notesApi from '../lib/notesApi'
 import { formatDateTime } from '../utils/date'
 import BackLink from '../components/ui/BackLink'
@@ -17,6 +18,7 @@ import DeleteNoteDialog from '../components/notes/DeleteNoteDialog'
 import NoteContent from '../components/notes/NoteContent'
 import NoteForm from '../components/notes/NoteForm'
 import NoteMeta from '../components/notes/NoteMeta'
+import RateLimitBanner from '../components/notes/RateLimitBanner'
 
 function DetailSkeleton() {
   return (
@@ -43,12 +45,13 @@ export default function NoteDetailPage() {
   const editing = searchParams.get('edit') === '1'
 
   const [note, setNote] = useState(null)
-  const [status, setStatus] = useState('loading') // loading | ready | not-found | error
+  const [status, setStatus] = useState('loading') // loading | ready | not-found | rate-limited | error
   const [errorText, setErrorText] = useState('')
   const [reloadKey, setReloadKey] = useState(0)
   const [saving, setSaving] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const { subscribeReset } = useRateLimit()
 
   useEffect(() => {
     const controller = new AbortController()
@@ -63,6 +66,8 @@ export default function NoteDetailPage() {
         if (notesApi.isCanceled(error)) return
         if (error.status === 404) {
           setStatus('not-found')
+        } else if (error.status === 429) {
+          setStatus('rate-limited')
         } else {
           setErrorText(notesApi.errorMessage(error, "We couldn't load this note. Please try again."))
           setStatus('error')
@@ -76,6 +81,15 @@ export default function NoteDetailPage() {
     setStatus('loading')
     setReloadKey((k) => k + 1)
   }
+
+  /* When the note failed with 429, reload it as soon as the limit resets */
+  useEffect(() => {
+    if (status !== 'rate-limited') return undefined
+    return subscribeReset(() => {
+      setStatus('loading')
+      setReloadKey((k) => k + 1)
+    })
+  }, [status, subscribeReset])
 
   const startEditing = () => setSearchParams({ edit: '1' })
   const stopEditing = () => setSearchParams({})
@@ -139,6 +153,14 @@ export default function NoteDetailPage() {
             </Button>
           }
         />
+      </Container>
+    )
+  }
+
+  if (status === 'rate-limited') {
+    return (
+      <Container className="py-10 sm:py-16">
+        <RateLimitBanner onRetry={retry} />
       </Container>
     )
   }

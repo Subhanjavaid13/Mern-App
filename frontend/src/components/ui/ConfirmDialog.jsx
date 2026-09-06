@@ -14,6 +14,7 @@ export default function ConfirmDialog({
   title = 'Are you sure?',
   description,
   confirmLabel = 'Confirm',
+  confirmDisabled = false,
   cancelLabel = 'Cancel',
   tone = 'primary',
   icon = TriangleAlert,
@@ -37,7 +38,12 @@ export default function ConfirmDialog({
           <Button variant="ghost" onClick={onClose} disabled={loading}>
             {cancelLabel}
           </Button>
-          <Button variant={confirmVariant} onClick={onConfirm} loading={loading}>
+          <Button
+            variant={confirmVariant}
+            onClick={onConfirm}
+            loading={loading}
+            disabled={confirmDisabled}
+          >
             {confirmLabel}
           </Button>
         </>

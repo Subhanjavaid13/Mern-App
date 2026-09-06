@@ -31,7 +31,12 @@ Start the backend first (`cd ../backend && npm start`); it listens on the `PORT`
 | `deleteNote(id)`                     | `DELETE /api/notes/:id`  |
 
 Pages pass an `AbortController` signal so requests are cancelled on unmount, and map errors to UI states:
-`429` → rate-limit screen, `404` → "note wandered off", anything else → error state with a retry button.
+`404` → not-found screen, anything else → error state with a retry button.
+
+**Rate limiting (429).** The backend answers with `Retry-After` and a `retryAfter` (seconds) field. The HTTP layer
+broadcasts every 429, and `RateLimitProvider` turns it into a countdown used across the app: a slim notice under
+the navbar, disabled Save / Delete buttons showing "Wait Ns", a toast with the wait time, and automatic retry of
+the failed page load once the window resets.
 
 For production, copy `.env.example` to `.env` and set `VITE_API_URL` to the deployed API. If the frontend
 and API live on different origins, enable CORS on the backend.
