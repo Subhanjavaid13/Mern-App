@@ -1,28 +1,23 @@
+// Must be first: loads backend/.env before any other module reads process.env
+import { repoRoot } from "./config/env.js";
+
 import express from "express";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
 import router from "./routes/notesRoutes.js";
 import connectDb from "./config/db.js";
-import dotenv from "dotenv";
 import rateLimiter from "./middleware/rateLimiter.js";
-
-// Resolve paths from this file, not from the current working directory,
-// so the server works no matter where it is started from.
-const __dirname = path.dirname(fileURLToPath(import.meta.url)); // backend/src
-const backendDir = path.resolve(__dirname, ".."); // backend
-const rootDir = path.resolve(backendDir, ".."); // repo root
-const clientDist = path.join(rootDir, "frontend", "dist");
-
-// Load backend/.env explicitly. On a host like Render the variables come from
-// the dashboard instead, and this simply finds nothing to load.
-dotenv.config({ path: path.join(backendDir, ".env") });
 
 const port = process.env.PORT || 5000;
 const isProduction = process.env.NODE_ENV === "production";
+const clientDist = path.join(repoRoot, "frontend", "dist");
 
 const app = express();
+
+// Render (and most hosts) sit behind a proxy; needed for correct client IPs,
+// which the rate limiter uses as its per-client key.
+app.set("trust proxy", 1);
 
 // Serve the built frontend when it exists (i.e. after `npm run build` on the
 // host). In local development the frontend runs on its own dev server instead.
@@ -35,6 +30,11 @@ if (!isProduction) {
 }
 
 app.use(express.json());
+
+// Health check for uptime monitoring (not rate limited)
+app.get("/api/health", (_, res) => {
+    res.status(200).json({ status: "ok", uptime: process.uptime() });
+});
 
 // Rate limit the API only — static assets must not consume the quota
 app.use("/api", rateLimiter);
@@ -57,6 +57,14 @@ if (serveClient) {
     });
 }
 
+// Errors always answer as JSON, and details are never leaked in production
+app.use((error, req, res, _next) => {
+    console.error("Unhandled error:", error);
+    res.status(error.status || 500).json({
+        message: isProduction ? "Internal Server Error" : error.message,
+    });
+});
+
 connectDb()
     .then(() => {
         app.listen(port, () => {
@@ -65,6 +73,6 @@ connectDb()
         });
     })
     .catch((error) => {
-        console.error("Failed to connect to the database:", error);
+        console.error("Failed to connect to the database:", error.message);
         process.exit(1);
     });
