@@ -8,18 +8,21 @@ import connectDb from "./config/db.js";
 import dotenv from "dotenv";
 import rateLimiter from "./middleware/rateLimiter.js";
 
-dotenv.config();
+// Resolve paths from this file, not from the current working directory,
+// so the server works no matter where it is started from.
+const __dirname = path.dirname(fileURLToPath(import.meta.url)); // backend/src
+const backendDir = path.resolve(__dirname, ".."); // backend
+const rootDir = path.resolve(backendDir, ".."); // repo root
+const clientDist = path.join(rootDir, "frontend", "dist");
+
+// Load backend/.env explicitly. On a host like Render the variables come from
+// the dashboard instead, and this simply finds nothing to load.
+dotenv.config({ path: path.join(backendDir, ".env") });
 
 const port = process.env.PORT || 5000;
 const isProduction = process.env.NODE_ENV === "production";
 
 const app = express();
-
-// Resolve paths from this file, not from the current working directory,
-// so the server works no matter where it is started from.
-const __dirname = path.dirname(fileURLToPath(import.meta.url)); // backend/src
-const rootDir = path.resolve(__dirname, "..", ".."); // repo root
-const clientDist = path.join(rootDir, "frontend", "dist");
 
 // Serve the built frontend when it exists (i.e. after `npm run build` on the
 // host). In local development the frontend runs on its own dev server instead.

@@ -40,12 +40,23 @@ function parseRetryAfter(response) {
 }
 
 /**
- * Shared axios instance used for every API call.
- * - In development, `/api` is proxied to the backend by Vite (see vite.config.js).
- * - In production, set VITE_API_URL (e.g. https://api.example.com/api).
+ * Base URL for every API call.
+ *
+ * It stays a RELATIVE path ("/api") in both environments, so the app never
+ * hardcodes localhost and works on any domain once deployed:
+ *  - development: Vite proxies /api → http://localhost:5000 (see vite.config.js),
+ *    which also keeps requests same-origin so no CORS is needed.
+ *  - production:  Express serves the built frontend and the API together,
+ *    so /api resolves to the deployed domain automatically.
+ *
+ * Only set VITE_API_URL if the API lives on a DIFFERENT domain than the
+ * frontend (e.g. https://my-api.onrender.com/api); the backend then needs CORS.
  */
+const BASE_URL = import.meta.env.VITE_API_URL || '/api'
+
+/** Shared axios instance used for every API call. */
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: BASE_URL,
   timeout: 15000,
   headers: { 'Content-Type': 'application/json' },
 })
